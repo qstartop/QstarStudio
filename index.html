@@ -1,152 +1,381 @@
 <!DOCTYPE html>
-<!-- saved from url=(0139)https://docs.google.com/document/u/0/d/e/2PACX-1vQ5ptRHRGWy-%2Dn-M1a6DmxFeJC2TzAGML6aXaAU2p-JILYeI97zVbLkIzrhMISYsn8clIMEVe6oCvXb/pub?pli=1 -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Privacy</title><link rel="shortcut icon" href="https://ssl.gstatic.com/docs/documents/images/docs-favicon-2026-v2.ico"><meta name="referrer" content="strict-origin-when-cross-origin"><style nonce="">
-      @import url("https://fonts.googleapis.com/css?family=Google+Sans");
-      @import url("https://fonts.googleapis.com/css?family=Roboto");
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Qstar Games</title>
+  <style>
+    /* reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      body {
-        font-family: Roboto, arial, sans, sans-serif;
-        margin: 0;
+    body {
+      background: #0b0e17;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      color: #f0f4ff;
+    }
+
+    .site-card {
+      max-width: 780px;
+      width: 100%;
+      background: rgba(18, 24, 38, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 48px 48px 40px 40px;
+      padding: 2.8rem 2rem 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      transition: box-shadow 0.25s;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .studio-title {
+      text-align: center;
+      font-size: 3.4rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 1.8rem;
+      color: #ffffff;
+      text-shadow: 0 2px 12px rgba(0, 180, 255, 0.2);
+      word-break: break-word;
+    }
+    .studio-title span {
+      background: linear-gradient(135deg, #b7e4ff, #7ac7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .game-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start; /* 改为 flex-start 让按钮有空间 */
+      gap: 2.8rem 2.2rem; /* 增加垂直间距，为按钮留空间 */
+      margin: 2rem 0 2.8rem 0;
+      min-height: 100px;
+      padding: 0.5rem 0 1.5rem 0; /* 底部留白 */
+    }
+
+    .game-item {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: #1e263b;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s;
+      cursor: default;
+      will-change: transform;
+      overflow: visible; /* 关键：允许按钮超出显示 */
+      flex-shrink: 0;
+    }
+
+    .game-item:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .game-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 28px;
+      display: block;
+    }
+
+    /* 按钮容器 - 使用绝对定位放在图标下方 */
+    .store-buttons {
+      position: absolute;
+      bottom: -32px; /* 从图标底部向下偏移 */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      background: rgba(10, 14, 23, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 8px 14px;
+      border-radius: 60px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(6px);
+      transition: opacity 0.25s ease, visibility 0.25s, transform 0.25s ease;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+      min-width: max-content;
+    }
+
+    .game-item:hover .store-buttons {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 40px;
+      background: #2f3a57;
+      color: #eef5ff;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      line-height: 1;
+      min-width: 56px;
+      text-align: center;
+    }
+
+    .store-btn:first-child {
+      background: #3c8d3c;
+      border-color: rgba(120, 200, 120, 0.2);
+    }
+    .store-btn:first-child:hover {
+      background: #4ba84b;
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(70, 200, 70, 0.2);
+    }
+
+    .store-btn:last-child {
+      background: #2a4b7a;
+      border-color: rgba(80, 150, 255, 0.2);
+    }
+    .store-btn:last-child:hover {
+      background: #3a6a9e;
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(60, 140, 255, 0.2);
+    }
+
+    .store-btn:active {
+      transform: scale(0.96);
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+      margin: 0.8rem 0 1.4rem 0;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem 2.5rem;
+      margin-top: 0.2rem;
+      font-size: 1rem;
+    }
+
+    .footer-links a, .footer-links .email-link {
+      color: #b0c7e5;
+      text-decoration: none;
+      font-weight: 450;
+      letter-spacing: 0.3px;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer-links a:hover, .footer-links .email-link:hover {
+      color: #ffffff;
+      border-bottom-color: rgba(120, 180, 255, 0.3);
+    }
+
+    .footer-links .email-link {
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .footer-links .email-link:hover {
+      border-bottom-color: rgba(120, 180, 255, 0.3);
+    }
+
+    .hint-text {
+      text-align: center;
+      margin: 1.6rem 0 0.2rem;
+      font-size: 0.8rem;
+      opacity: 0.4;
+      color: #9bb1d0;
+      letter-spacing: 0.3px;
+      font-weight: 300;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 520px) {
+      .site-card {
+        padding: 1.8rem 1.2rem 1.8rem;
+        border-radius: 32px;
+      }
+      .studio-title {
+        font-size: 2.6rem;
+      }
+      .game-item {
+        width: 78px;
+        height: 78px;
+        border-radius: 24px;
+      }
+      .game-icon-img {
+        border-radius: 24px;
+      }
+      .store-buttons {
+        padding: 6px 10px;
+        gap: 5px;
+        bottom: -28px;
+      }
+      .store-btn {
+        font-size: 0.6rem;
+        padding: 4px 10px;
+        min-width: 44px;
+      }
+      .game-grid {
+        gap: 2.4rem 1.8rem;
+        padding-bottom: 1rem;
+      }
+      .footer-links {
+        gap: 1.2rem 1.8rem;
+        font-size: 0.9rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .game-grid {
+        gap: 2rem 1.2rem;
+      }
+      .game-item {
+        width: 70px;
+        height: 70px;
+      }
+      .store-buttons {
+        bottom: -24px;
+        padding: 4px 8px;
+      }
+      .store-btn {
+        font-size: 0.55rem;
+        padding: 3px 8px;
+        min-width: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-card">
+    <h1 class="studio-title"><span>Qstar Games</span></h1>
+
+    <div class="game-grid" id="gameGrid">
+      <!-- 初始游戏图标 -->
+      <div class="game-item" data-game="galaxy">
+        <img class="game-icon-img" src="game1.png" alt="游戏图标">
+        <div class="store-buttons">
+          <a href="#" class="store-btn" data-store="google">Google Play</a>
+          <a href="#" class="store-btn" data-store="appstore">App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer-links">
+      <a href="privacy.html" class="policy-link">📄 Privacy Policy</a>
+      <button class="email-link" id="emailButton">✉️ info@gtop.top</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      "use strict";
+
+      const gameGrid = document.getElementById('gameGrid');
+
+      function addGameIcon(imageSrc, googleLink, appleLink) {
+        if (!imageSrc) return;
+
+        const gameItem = document.createElement('div');
+        gameItem.className = 'game-item';
+        gameItem.setAttribute('data-game', 'custom-' + Date.now());
+
+        const img = document.createElement('img');
+        img.className = 'game-icon-img';
+        img.src = imageSrc;
+        img.alt = '游戏图标';
+        gameItem.appendChild(img);
+
+        const btnWrapper = document.createElement('div');
+        btnWrapper.className = 'store-buttons';
+
+        const googleBtn = document.createElement('a');
+        googleBtn.className = 'store-btn';
+        googleBtn.setAttribute('data-store', 'google');
+        googleBtn.textContent = 'Google Play';
+        googleBtn.href = googleLink || '#';
+        googleBtn.target = '_blank';
+        googleBtn.rel = 'noopener noreferrer';
+
+        const appleBtn = document.createElement('a');
+        appleBtn.className = 'store-btn';
+        appleBtn.setAttribute('data-store', 'appstore');
+        appleBtn.textContent = 'App Store';
+        appleBtn.href = appleLink || '#';
+        appleBtn.target = '_blank';
+        appleBtn.rel = 'noopener noreferrer';
+
+        btnWrapper.appendChild(googleBtn);
+        btnWrapper.appendChild(appleBtn);
+        gameItem.appendChild(btnWrapper);
+        gameGrid.appendChild(gameItem);
       }
 
-      iframe {
-        border: 0;
-        frameborder: 0;
-        height: 100%;
-        width: 100%;
-      }
+      window.addEventListener('DOMContentLoaded', function() {
+<!--        addGameIcon('game2.png', 'https://play.google.com/store/apps/details?id=com.qstar.demo', 'https://apps.apple.com/app/id123456789');-->
+<!--        addGameIcon('game3.png', 'https://play.google.com/store/apps/details?id=com.qstar.arcade', 'https://apps.apple.com/app/id987654321');-->
 
-      #banners {
-        align-items: center;
-        background: white;
-        display: block;
-        justify-content: space-between;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 100;
-      }
-
-      #banners #publish-banner {
-        background-color: #e8f0fe;
-        border-bottom: 1px #ccc solid;
-        color: #202124;
-        display: flex;
-        flex: 1 1 0%;
-        height: 60px;
-        width: 100%;
-      }
-
-      #publish-banner-icon {
-        display: flex;
-        fill: #1967d2;
-        margin: auto 20px;
-      }
-
-      #publish-banner-text {
-        flex-grow: 1;
-        margin: auto 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      #publish-banner-buttons {
-        margin: auto 25px auto 0;
-        white-space: nowrap;
-      }
-
-      #publish-banner-buttons span {
-        align-self: center;
-        background-color: inherit;
-        border: none;
-        font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
-        margin: 0 16px 0 32px;
-      }
-
-      #publish-banner-buttons a {
-        color: #1967d2;
-        cursor: pointer;
-        font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 24px;
-        text-decoration: none;
-      }
-
-      #banners #title-banner {
-        background: white;
-        border-bottom: 1px #ccc solid;
-        display: flex;
-        flex: 1 1 0%;
-        height: 60px;
-        width: 100%;
-      }
-
-      #banners #title-banner #title {
-        flex-grow: 1;
-        font-family: 'Google Sans';
-        font-size: large;
-        margin: auto 0 auto 20px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 70%;
-      }
-
-      #banners #title-banner #interval {
-        margin: auto 25px auto 0;
-        font-family: Roboto;
-        font-size: small;;
-      }
-
-      #footer {
-        background: #f0f0f0;
-        border-bottom: 1px #ccc solid;
-        bottom: 0;
-        font-family: Roboto;
-        font-size: small;
-        padding: 10px 10px;
-        position: fixed;
-        text-align: center;
-        width: 100%;
-      }
-
-      @media only screen and (max-device-width: 800px) {
-        #banners #title-banner {
-          border-bottom-width: 5px;
-          height: auto;
-          display: block;
+        const firstGame = document.querySelector('.game-item');
+        if (firstGame) {
+          const googleBtn = firstGame.querySelector('.store-btn[data-store="google"]');
+          const appleBtn = firstGame.querySelector('.store-btn[data-store="appstore"]');
+          if (googleBtn) googleBtn.href = 'https://play.google.com/store/apps/details?id=com.qstar.gem3d';
+          if (appleBtn) appleBtn.href = 'https://apps.apple.com/app/id111111111';
         }
+      });
 
-        #banners #title-banner #title {
-          font-size: 3em;
-          margin: auto 0 auto 20px;
-          width: 90%;
-        }
-
-        #banners #title-banner #interval {
-          font-size: 1.5em;
-          margin: 10px 0 auto 25px;
-        }
-
-        #footer {
-          font-size: 2em;
-        }
+      const emailBtn = document.getElementById('emailButton');
+      if (emailBtn) {
+        emailBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = 'mailto:info@gtop.top';
+        });
       }
-
-      .dash {
-        padding: 0 6px;
-      }
-
-    
-        #contents {
-          padding: 100px 20% 50px 20%;
-        }
-
-        @media only screen and (max-device-width: 800px) {
-          #contents {
-            padding: 150px 5% 80px;
-          }
-        }
-      </style></head><body><div id="contents"><style type="text/css">.lst-kix_u1cvq8enej3v-7>li:before{content:"\0025cb   "}.lst-kix_86tclgpfwkts-2>li:before{content:"\0025a0   "}.lst-kix_86tclgpfwkts-4>li:before{content:"\0025cb   "}.lst-kix_u1cvq8enej3v-5>li:before{content:"\0025a0   "}.lst-kix_u1cvq8enej3v-6>li:before{content:"\0025cf   "}.lst-kix_86tclgpfwkts-3>li:before{content:"\0025cf   "}.lst-kix_86tclgpfwkts-7>li:before{content:"\0025cb   "}.lst-kix_u1cvq8enej3v-3>li:before{content:"\0025cf   "}.lst-kix_86tclgpfwkts-6>li:before{content:"\0025cf   "}ul.lst-kix_zf66l2nt92jg-0{list-style-type:none}.lst-kix_u1cvq8enej3v-4>li:before{content:"\0025cb   "}ul.lst-kix_zf66l2nt92jg-2{list-style-type:none}.lst-kix_86tclgpfwkts-5>li:before{content:"\0025a0   "}ul.lst-kix_zf66l2nt92jg-1{list-style-type:none}ul.lst-kix_zf66l2nt92jg-4{list-style-type:none}ul.lst-kix_zf66l2nt92jg-3{list-style-type:none}ul.lst-kix_zf66l2nt92jg-6{list-style-type:none}ul.lst-kix_zf66l2nt92jg-5{list-style-type:none}.lst-kix_u1cvq8enej3v-1>li:before{content:"\0025cb   "}ul.lst-kix_zf66l2nt92jg-8{list-style-type:none}ul.lst-kix_zf66l2nt92jg-7{list-style-type:none}.lst-kix_u1cvq8enej3v-2>li:before{content:"\0025a0   "}.lst-kix_86tclgpfwkts-8>li:before{content:"\0025a0   "}.lst-kix_f34x6jenqjnh-8>li:before{content:"\0025a0   "}.lst-kix_u1cvq8enej3v-0>li:before{content:"  "}.lst-kix_dnuguau7xgz0-5>li:before{content:"\0025a0   "}.lst-kix_dnuguau7xgz0-4>li:before{content:"\0025cb   "}.lst-kix_dnuguau7xgz0-6>li:before{content:"\0025cf   "}.lst-kix_f34x6jenqjnh-2>li:before{content:"\0025a0   "}.lst-kix_f34x6jenqjnh-4>li:before{content:"\0025cb   "}.lst-kix_zf66l2nt92jg-1>li:before{content:"\0025cb   "}ul.lst-kix_srkmo3ul2r6r-0{list-style-type:none}.lst-kix_f34x6jenqjnh-3>li:before{content:"\0025cf   "}.lst-kix_f34x6jenqjnh-7>li:before{content:"\0025cb   "}ul.lst-kix_srkmo3ul2r6r-3{list-style-type:none}.lst-kix_zf66l2nt92jg-0>li:before{content:"  "}ul.lst-kix_srkmo3ul2r6r-4{list-style-type:none}.lst-kix_dnuguau7xgz0-0>li:before{content:"  "}.lst-kix_dnuguau7xgz0-8>li:before{content:"\0025a0   "}ul.lst-kix_srkmo3ul2r6r-1{list-style-type:none}ul.lst-kix_srkmo3ul2r6r-2{list-style-type:none}.lst-kix_f34x6jenqjnh-6>li:before{content:"\0025cf   "}.lst-kix_dnuguau7xgz0-7>li:before{content:"\0025cb   "}ul.lst-kix_srkmo3ul2r6r-7{list-style-type:none}ul.lst-kix_srkmo3ul2r6r-8{list-style-type:none}ul.lst-kix_srkmo3ul2r6r-5{list-style-type:none}ul.lst-kix_srkmo3ul2r6r-6{list-style-type:none}.lst-kix_f34x6jenqjnh-5>li:before{content:"\0025a0   "}.lst-kix_f34x6jenqjnh-0>li:before{content:"  "}.lst-kix_6o8zbg2b4n6w-4>li:before{content:"\0025cb   "}.lst-kix_f34x6jenqjnh-1>li:before{content:"\0025cb   "}.lst-kix_6o8zbg2b4n6w-5>li:before{content:"\0025a0   "}.lst-kix_6o8zbg2b4n6w-6>li:before{content:"\0025cf   "}.lst-kix_6o8zbg2b4n6w-7>li:before{content:"\0025cb   "}.lst-kix_6o8zbg2b4n6w-8>li:before{content:"\0025a0   "}.lst-kix_dnuguau7xgz0-1>li:before{content:"\0025cb   "}.lst-kix_dnuguau7xgz0-2>li:before{content:"\0025a0   "}.lst-kix_dnuguau7xgz0-3>li:before{content:"\0025cf   "}.lst-kix_wxglm8e8futf-8>li:before{content:"\0025a0   "}.lst-kix_wxglm8e8futf-6>li:before{content:"\0025cf   "}.lst-kix_wxglm8e8futf-5>li:before{content:"\0025a0   "}.lst-kix_wxglm8e8futf-7>li:before{content:"\0025cb   "}.lst-kix_srkmo3ul2r6r-7>li:before{content:"\0025cb   "}.lst-kix_srkmo3ul2r6r-6>li:before{content:"\0025cf   "}ul.lst-kix_86tclgpfwkts-6{list-style-type:none}.lst-kix_wxglm8e8futf-2>li:before{content:"\0025a0   "}ul.lst-kix_86tclgpfwkts-7{list-style-type:none}ul.lst-kix_86tclgpfwkts-4{list-style-type:none}.lst-kix_wxglm8e8futf-1>li:before{content:"\0025cb   "}.lst-kix_wxglm8e8futf-3>li:before{content:"\0025cf   "}ul.lst-kix_86tclgpfwkts-5{list-style-type:none}ul.lst-kix_86tclgpfwkts-2{list-style-type:none}.lst-kix_wxglm8e8futf-0>li:before{content:"  "}.lst-kix_wxglm8e8futf-4>li:before{content:"\0025cb   "}ul.lst-kix_86tclgpfwkts-3{list-style-type:none}ul.lst-kix_86tclgpfwkts-0{list-style-type:none}ul.lst-kix_86tclgpfwkts-1{list-style-type:none}.lst-kix_srkmo3ul2r6r-8>li:before{content:"\0025a0   "}ul.lst-kix_86tclgpfwkts-8{list-style-type:none}.lst-kix_6o8zbg2b4n6w-3>li:before{content:"\0025cf   "}.lst-kix_6o8zbg2b4n6w-2>li:before{content:"\0025a0   "}.lst-kix_srkmo3ul2r6r-0>li:before{content:"  "}.lst-kix_6o8zbg2b4n6w-1>li:before{content:"\0025cb   "}.lst-kix_6o8zbg2b4n6w-0>li:before{content:"  "}ul.lst-kix_u1cvq8enej3v-8{list-style-type:none}ul.lst-kix_u1cvq8enej3v-6{list-style-type:none}ul.lst-kix_u1cvq8enej3v-7{list-style-type:none}.lst-kix_srkmo3ul2r6r-3>li:before{content:"\0025cf   "}.lst-kix_srkmo3ul2r6r-5>li:before{content:"\0025a0   "}ul.lst-kix_u1cvq8enej3v-4{list-style-type:none}ul.lst-kix_u1cvq8enej3v-5{list-style-type:none}ul.lst-kix_u1cvq8enej3v-2{list-style-type:none}ul.lst-kix_u1cvq8enej3v-3{list-style-type:none}.lst-kix_srkmo3ul2r6r-4>li:before{content:"\0025cb   "}ul.lst-kix_u1cvq8enej3v-0{list-style-type:none}ul.lst-kix_u1cvq8enej3v-1{list-style-type:none}.lst-kix_srkmo3ul2r6r-1>li:before{content:"\0025cb   "}.lst-kix_zf66l2nt92jg-2>li:before{content:"\0025a0   "}.lst-kix_srkmo3ul2r6r-2>li:before{content:"\0025a0   "}.lst-kix_zf66l2nt92jg-3>li:before{content:"\0025cf   "}.lst-kix_zf66l2nt92jg-4>li:before{content:"\0025cb   "}.lst-kix_zf66l2nt92jg-5>li:before{content:"\0025a0   "}ul.lst-kix_6o8zbg2b4n6w-7{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-6{list-style-type:none}.lst-kix_zf66l2nt92jg-7>li:before{content:"\0025cb   "}.lst-kix_zf66l2nt92jg-8>li:before{content:"\0025a0   "}ul.lst-kix_6o8zbg2b4n6w-8{list-style-type:none}.lst-kix_zf66l2nt92jg-6>li:before{content:"\0025cf   "}ul.lst-kix_f34x6jenqjnh-7{list-style-type:none}ul.lst-kix_f34x6jenqjnh-6{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-1{list-style-type:none}ul.lst-kix_f34x6jenqjnh-5{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-0{list-style-type:none}ul.lst-kix_f34x6jenqjnh-4{list-style-type:none}ul.lst-kix_wxglm8e8futf-8{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-3{list-style-type:none}ul.lst-kix_f34x6jenqjnh-3{list-style-type:none}ul.lst-kix_wxglm8e8futf-7{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-2{list-style-type:none}ul.lst-kix_f34x6jenqjnh-2{list-style-type:none}ul.lst-kix_wxglm8e8futf-6{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-5{list-style-type:none}ul.lst-kix_f34x6jenqjnh-1{list-style-type:none}ul.lst-kix_wxglm8e8futf-5{list-style-type:none}ul.lst-kix_6o8zbg2b4n6w-4{list-style-type:none}ul.lst-kix_f34x6jenqjnh-0{list-style-type:none}ul.lst-kix_wxglm8e8futf-4{list-style-type:none}ul.lst-kix_wxglm8e8futf-3{list-style-type:none}ul.lst-kix_wxglm8e8futf-2{list-style-type:none}ul.lst-kix_wxglm8e8futf-1{list-style-type:none}.lst-kix_86tclgpfwkts-0>li:before{content:"  "}ul.lst-kix_wxglm8e8futf-0{list-style-type:none}.lst-kix_u1cvq8enej3v-8>li:before{content:"\0025a0   "}.lst-kix_86tclgpfwkts-1>li:before{content:"\0025cb   "}ul.lst-kix_f34x6jenqjnh-8{list-style-type:none}ul.lst-kix_dnuguau7xgz0-0{list-style-type:none}ul.lst-kix_dnuguau7xgz0-1{list-style-type:none}li.li-bullet-0:before{margin-left:-18pt;white-space:nowrap;display:inline-block;min-width:18pt}ul.lst-kix_dnuguau7xgz0-6{list-style-type:none}ul.lst-kix_dnuguau7xgz0-7{list-style-type:none}ul.lst-kix_dnuguau7xgz0-8{list-style-type:none}ul.lst-kix_dnuguau7xgz0-2{list-style-type:none}ul.lst-kix_dnuguau7xgz0-3{list-style-type:none}ul.lst-kix_dnuguau7xgz0-4{list-style-type:none}ul.lst-kix_dnuguau7xgz0-5{list-style-type:none}ol{margin:0;padding:0}table td,table th{padding:0}.c13{padding-top:18pt;border-top-width:0pt;border-bottom-width:0pt;padding-bottom:6pt;line-height:1.15;border-bottom-style:solid;orphans:2;border-top-style:solid;widows:2;text-align:left}.c0{padding-top:0pt;border-top-width:0pt;border-bottom-width:0pt;padding-bottom:0pt;line-height:1.15;border-bottom-style:solid;orphans:2;border-top-style:solid;widows:2;text-align:left}.c6{padding-top:20pt;border-top-width:0pt;border-bottom-width:0pt;padding-bottom:6pt;line-height:1.15;border-bottom-style:solid;orphans:2;border-top-style:solid;widows:2;text-align:left}.c10{padding-top:0pt;border-top-width:0pt;border-bottom-width:0pt;padding-bottom:3pt;line-height:1.15;border-bottom-style:solid;orphans:2;border-top-style:solid;widows:2;text-align:left}.c8{-webkit-text-decoration-skip:none;color:#1155cc;font-weight:400;text-decoration:underline;vertical-align:baseline;text-decoration-skip-ink:none;font-size:11pt;font-family:"Arial";font-style:normal}.c7{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:16pt;font-family:"Arial";font-style:normal}.c12{padding-top:0pt;padding-bottom:0pt;line-height:1.15;orphans:2;widows:2;text-align:left;height:11pt}.c9{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:26pt;font-family:"Arial";font-style:normal}.c4{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:20pt;font-family:"Arial";font-style:normal}.c1{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:11pt;font-family:"Arial";font-style:normal}.c11{text-decoration-skip-ink:none;-webkit-text-decoration-skip:none;color:#1155cc;text-decoration:underline}.c14{background-color:#ffffff;max-width:468pt;padding:72pt 72pt 72pt 72pt}.c5{color:inherit;text-decoration:inherit}.c3{padding:0;margin:0}.c2{padding-left:0pt;margin-left:72pt}.title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}.subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}li{color:#000000;font-size:11pt;font-family:"Arial"}p{margin:0;color:#000000;font-size:11pt;font-family:"Arial"}h1{padding-top:20pt;color:#000000;font-size:20pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h2{padding-top:18pt;color:#000000;font-size:16pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h3{padding-top:16pt;color:#434343;font-size:14pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h4{padding-top:14pt;color:#666666;font-size:12pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h5{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h6{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;font-style:italic;orphans:2;widows:2;text-align:left}</style><div class="c14 doc-content"><p class="c10"><span class="c9">Privacy policy</span></p><p class="c0"><span class="c1">This Service is provided by Qstar Studio at no cost and is intended for use as is.</span></p><p class="c0"><span class="c1">This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.</span></p><p class="c0"><span class="c1">If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will never sell your information, and will not use or share your information with anyone except as described in this Privacy Policy.</span></p><p class="c0"><span class="c1">The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions.</span></p><h1 class="c6" id="h.zags1ppdg7gx"><span class="c4">Information Collection and Use</span></h1><p class="c0"><span class="c1">For a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to IDFA. The information that we request will be retained by us and used as described in this privacy policy.</span></p><p class="c0"><span class="c1">The app does use third-party services that may collect information used to identify you.</span></p><p class="c0"><span class="c1">Link to the privacy policy of third party service providers used by the app:</span></p><ul class="c3 lst-kix_6o8zbg2b4n6w-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">https://facebook.com/about/privacy</span></li><li class="c0 c2 li-bullet-0"><span class="c11"><a class="c5" href="https://www.google.com/url?q=https://gameanalytics.com/privacy&amp;sa=D&amp;source=editors&amp;ust=1786720187758054&amp;usg=AOvVaw045tvcl1sRkkeZY1weHykg">https://gameanalytics.com/privacy</a></span></li><li class="c0 c2 li-bullet-0"><span class="c11"><a class="c5" href="https://www.google.com/url?q=https://www.adjust.com/terms/privacy-policy/&amp;sa=D&amp;source=editors&amp;ust=1786720187758227&amp;usg=AOvVaw3-xTfDzr51U-dal5FPWsTU">https://www.adjust.com/terms/privacy-policy/</a></span></li><li class="c0 c2 li-bullet-0"><span class="c1">https://www.voodoo.io/</span></li></ul><h1 class="c6" id="h.pl810o5i5dt6"><span class="c4">Log Data</span></h1><p class="c0"><span class="c1">We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device model, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics.</span></p><h1 class="c6" id="h.6gggppjzqfml"><span class="c4">Service Providers</span></h1><p class="c0"><span class="c1">We may employ third-party companies and individuals due to the following reasons:</span></p><p class="c0"><span class="c1">To facilitate our Service;</span></p><ul class="c3 lst-kix_srkmo3ul2r6r-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">To provide the Service on our behalf;</span></li><li class="c0 c2 li-bullet-0"><span class="c1">To perform Service-related services; or</span></li><li class="c0 c2 li-bullet-0"><span class="c1">To assist us in analyzing how our Service is used.</span></li></ul><p class="c0"><span class="c1">We want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.</span></p><h1 class="c6" id="h.wkw76885crtt"><span class="c4">Security</span></h1><p class="c0"><span class="c1">We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.</span></p><h1 class="c6" id="h.2v67mnmwwcg6"><span class="c4">Links to Other Sites</span></h1><p class="c0"><span class="c1">This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by us. Therefore, we strongly advise you to review the Privacy Policy of these websites. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</span></p><h1 class="c6" id="h.47j3pfx6uyc3"><span class="c4">Children’s Privacy</span></h1><p class="c0"><span class="c1">Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do the necessary actions.</span></p><h1 class="c6" id="h.ibaixlar8awe"><span class="c4">Changes to This Privacy Policy</span></h1><p class="c0"><span class="c1">We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.</span></p><h1 class="c6" id="h.7gx7f4yp0tqi"><span class="c4">Request User Data Deletion</span></h1><p class="c0"><span class="c1">When you install and use Qstar Studio mobile applications, we can collect and process some of your data for different legitimate purposes.</span></p><p class="c0"><span class="c1">You will find below explanations regarding the reasons why we may collect data.</span></p><h2 class="c13" id="h.sd9agfthdvjf"><span class="c7">Why is data collected?</span></h2><p class="c0"><span class="c1">Qstar Studio and its third-party partners collect data:</span></p><ul class="c3 lst-kix_86tclgpfwkts-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">To provide you with the services you asked for</span></li><li class="c0 c2 li-bullet-0"><span class="c1">To run analytics and understand how users interact with our product and services in order to continuously improve it</span></li></ul><p class="c0"><span class="c1">The third-party partners that Qstar Studio will share the data with are:</span></p><ul class="c3 lst-kix_dnuguau7xgz0-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">GameAnalytics</span></li><li class="c0 c2 li-bullet-0"><span class="c1">Facebook Analytics</span></li><li class="c0 c2 li-bullet-0"><span class="c1">Adjust</span></li><li class="c0 c2 li-bullet-0"><span class="c1">Voodoo</span></li></ul><h2 class="c13" id="h.43tc0n7xe58y"><span class="c7">Data deletion requests</span></h2><p class="c0"><span class="c1">To delete user data collected by Qstar Studio, please reach out to hzstarq@gmail.COM</span></p><p class="c0"><span class="c1">If you also want to request the deletion of the data that may have been collected about you or your device by our third-party partners that are acting as independent data controllers, you will find below the contact for each partner and the link to the relevant section of their privacy policies:</span></p><p class="c0"><span class="c1">GameAnalytics:</span></p><ul class="c3 lst-kix_f34x6jenqjnh-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">email: privacy@gameanalytics.com</span></li><li class="c0 c2 li-bullet-0"><span class="c1">privacy policy: https://gameanalytics.com/privacy/#6-changing-or-deleting-your-information</span></li></ul><p class="c0"><span class="c1">Facebook Analytics:</span></p><ul class="c3 lst-kix_zf66l2nt92jg-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">email: none, please refer to the privacy policy</span></li><li class="c0 c2 li-bullet-0"><span class="c1">privacy policy: https://www.facebook.com/policy.php</span></li></ul><p class="c0"><span class="c1">Adjust:</span></p><ul class="c3 lst-kix_u1cvq8enej3v-0 start"><li class="c0 c2 li-bullet-0"><span class="c1">email: privacy@adjust.com</span></li><li class="c0 c2 li-bullet-0"><span class="c1">privacy policy: https://www.adjust.com/terms/privacy-policy/</span></li></ul><p class="c0"><span class="c1">Voodoo:</span></p><ul class="c3 lst-kix_wxglm8e8futf-0 start"><li class="c0 c2 li-bullet-0"><span>email: </span><span class="c8">dpo@voodoo.io</span></li><li class="c0 c2 li-bullet-0"><span class="c1">privacy policy: https://www.voodoo.io</span></li></ul><p class="c12"><span class="c1"></span></p><p class="c12"><span class="c1"></span></p></div></div></body></html>
+    })();
+  </script>
+</body>
+</html>
